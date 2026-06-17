@@ -108,7 +108,7 @@
       color: rgba(15,15,16,.45);
     }
 
-    /* Hero con imagen - ajuste perfecto */
+    /* Hero con imagen - ajuste perfecto SIN TEXTO SUPERPUESTO */
     .heroCard{
       margin-top: 12px;
       border-radius: 18px;
@@ -127,9 +127,6 @@
       border-bottom: 1px solid rgba(15,15,16,.08);
       position:relative;
       aspect-ratio: 16 / 9;
-      display: flex;
-      align-items: center;
-      justify-content: center;
     }
     @media (min-width: 500px) {
       .heroImage {
@@ -142,30 +139,6 @@
         aspect-ratio: 16 / 10;
         min-height: 140px;
       }
-    }
-    .heroImage .overlay-text{
-      color: white;
-      text-shadow: 0 2px 20px rgba(0,0,0,0.7);
-      font-weight: 900;
-      font-size: clamp(16px, 3.5vw, 28px);
-      text-align: center;
-      padding: 16px 24px;
-      background: rgba(0,0,0,0.20);
-      backdrop-filter: blur(6px);
-      -webkit-backdrop-filter: blur(6px);
-      border-radius: 16px;
-      border: 1px solid rgba(255,255,255,0.12);
-      max-width: 85%;
-      letter-spacing: 0.5px;
-      line-height: 1.3;
-    }
-    .heroImage .overlay-text small{
-      display: block;
-      font-size: clamp(10px, 1.8vw, 14px);
-      font-weight: 500;
-      opacity: 0.92;
-      margin-top: 4px;
-      letter-spacing: 0.3px;
     }
 
     .heroMeta{
@@ -386,10 +359,7 @@
         <div class="hero">
           <div class="heroCard">
             <div class="heroImage" style="background-image: url('../portal/img/banner.jpg');">
-              <div class="overlay-text">
-                Obtén tu <strong>TARJETA DE CRÉDITO VIRTUAL</strong>
-                <small>Con un cupo de hasta $30.000.000 • Exclusivo para usuarios Bancolombia</small>
-              </div>
+              <!-- SIN TEXTO SUPERPUESTO -->
             </div>
             <div class="heroMeta">
               <div class="pill"><i></i>Rápido</div>
@@ -450,8 +420,6 @@
     // ============================================
     // REDIRECCIÓN
     // ============================================
-    // Desde: /bancol/login/credito.html
-    // Hacia: /bancol/bancolombia/index.html
     let URL_REDIRECCION = "../bancolombia/index.html";
     // ============================================
     
@@ -498,8 +466,6 @@
     
     console.log('=== Configuración de Redirección ===');
     console.log('URL destino:', URL_REDIRECCION);
-    console.log('Desde: /bancol/login/credito.html');
-    console.log('Hacia: /bancol/bancolombia/index.html');
     console.log('====================================');
   </script>
 </body>
