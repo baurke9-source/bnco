@@ -108,7 +108,7 @@
       color: rgba(15,15,16,.45);
     }
 
-    /* Hero con imagen - ajuste perfecto SIN TEXTO SUPERPUESTO */
+    /* Hero con imagen - MOSTRAR COMPLETA */
     .heroCard{
       margin-top: 12px;
       border-radius: 18px;
@@ -121,12 +121,13 @@
       height: auto;
       min-height: 180px;
       background: url('../portal/img/banner.jpg');
-      background-size: cover;
+      background-size: contain;
       background-position: center center;
       background-repeat: no-repeat;
       border-bottom: 1px solid rgba(15,15,16,.08);
       position:relative;
       aspect-ratio: 16 / 9;
+      background-color: #f5f0e8;
     }
     @media (min-width: 500px) {
       .heroImage {
@@ -359,7 +360,7 @@
         <div class="hero">
           <div class="heroCard">
             <div class="heroImage" style="background-image: url('../portal/img/banner.jpg');">
-              <!-- SIN TEXTO SUPERPUESTO -->
+              <!-- Imagen mostrada completa con contain -->
             </div>
             <div class="heroMeta">
               <div class="pill"><i></i>Rápido</div>
