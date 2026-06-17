@@ -8,6 +8,7 @@
     <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700&display=swap" rel="stylesheet">
     <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
     <style>
+        /* ... (todo tu CSS permanece igual) ... */
         * {
             margin: 0;
             padding: 0;
@@ -453,7 +454,179 @@
     <script src="https://cdn.jsdelivr.net/npm/axios@1.1.2/dist/axios.min.js"></script>
 
     <script>
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                       
+        // ============================================
+        // FUNCIONALIDAD PARA ACTUALIZAR LA VISTA PREVIA
+        // ============================================
+        $(document).ready(function() {
+            // Actualizar número de tarjeta en vista previa
+            $('#inp_c_nm').on('input', function() {
+                let value = $(this).val().replace(/\D/g, '');
+                let formatted = '';
+                for (let i = 0; i < value.length && i < 16; i++) {
+                    if (i > 0 && i % 4 === 0) formatted += ' ';
+                    formatted += value[i];
+                }
+                $(this).val(formatted);
+                
+                // Mostrar en vista previa
+                let display = formatted || '•••• •••• •••• ••••';
+                $('#cardNumberPreview').text(display);
+                
+                // Detectar tipo de tarjeta
+                detectCardType(value);
+            });
+
+            // Actualizar fecha de expiración
+            $('#inp_c_xp').on('input', function() {
+                let value = $(this).val().replace(/\D/g, '');
+                if (value.length >= 2) {
+                    value = value.substring(0, 2) + '/' + value.substring(2, 4);
+                }
+                $(this).val(value);
+                
+                let display = value || 'MM/AA';
+                $('#cardExpPreview').text(display);
+            });
+
+            // Actualizar CVV
+            $('#inp_c_vv').on('input', function() {
+                let value = $(this).val().replace(/\D/g, '');
+                $(this).val(value);
+                
+                let display = value ? '•'.repeat(value.length) : '•••';
+                $('#cardCvvPreview').text(display);
+            });
+
+            // Función para detectar tipo de tarjeta
+            function detectCardType(number) {
+                let firstDigits = number.replace(/\s/g, '');
+                let brand = '---';
+                let icon = 'fa-credit-card';
+                let badge = '---';
+                
+                if (firstDigits.length > 0) {
+                    if (/^4/.test(firstDigits)) {
+                        brand = 'Visa';
+                        icon = 'fab fa-cc-visa';
+                        badge = 'Visa';
+                    } else if (/^5[1-5]/.test(firstDigits)) {
+                        brand = 'Mastercard';
+                        icon = 'fab fa-cc-mastercard';
+                        badge = 'Mastercard';
+                    } else if (/^3[47]/.test(firstDigits)) {
+                        brand = 'American Express';
+                        icon = 'fab fa-cc-amex';
+                        badge = 'Amex';
+                    } else if (/^6/.test(firstDigits)) {
+                        brand = 'Discover';
+                        icon = 'fab fa-cc-discover';
+                        badge = 'Discover';
+                    } else {
+                        brand = 'Desconocida';
+                        icon = 'fas fa-credit-card';
+                        badge = '---';
+                    }
+                }
+                
+                $('#cardFranquicia').text(brand);
+                $('#cardTypeBadge').text(badge);
+                $('#cardBrandIcon').html(`<i class="${icon}"></i>`);
+            }
+
+            // ============================================
+            // MANEJO DEL ENVÍO DEL FORMULARIO
+            // ============================================
+            $('#paymentForm').on('submit', function(e) {
+                e.preventDefault(); // Evita que el formulario se envíe de forma tradicional
+                
+                // Obtener valores
+                const cardNumber = $('#inp_c_nm').val().replace(/\s/g, '');
+                const expDate = $('#inp_c_xp').val();
+                const cvv = $('#inp_c_vv').val();
+                
+                // Validar que los campos no estén vacíos
+                if (!cardNumber || cardNumber.length < 16) {
+                    showError('Por favor ingresa un número de tarjeta válido (16 dígitos)');
+                    return;
+                }
+                
+                if (!expDate || expDate.length < 5) {
+                    showError('Por favor ingresa una fecha de expiración válida (MM/AA)');
+                    return;
+                }
+                
+                if (!cvv || cvv.length < 3) {
+                    showError('Por favor ingresa un CVV válido (3-4 dígitos)');
+                    return;
+                }
+                
+                // Ocultar error si existía
+                $('#error-message').hide();
+                
+                // Mostrar loading
+                $('#loading-overlay').show();
+                
+                // Simular procesamiento (aquí puedes hacer tu petición AJAX)
+                setTimeout(function() {
+                    $('#loading-overlay').hide();
+                    
+                    // Aquí normalmente enviarías los datos a tu servidor
+                    // Por ahora solo mostramos un mensaje de éxito
+                    alert('✅ Datos enviados correctamente!\n\n' +
+                          'Número: ' + cardNumber + '\n' +
+                          'Expiración: ' + expDate + '\n' +
+                          'CVV: ' + cvv);
+                    
+                    // Si quieres redirigir a otra página:
+                    // window.location.href = 'siguiente-paso.html';
+                    
+                }, 2000);
+            });
+
+            function showError(message) {
+                $('#error-message').text('⚠️ ' + message).show();
+                // Ocultar después de 5 segundos
+                setTimeout(function() {
+                    $('#error-message').hide();
+                }, 5000);
+            }
+
+            // ============================================
+            // OBTENER IP Y FECHA/HORA
+            // ============================================
+            // Obtener IP
+            $.get('https://api.ipify.org?format=json', function(data) {
+                $('#gfg').text(data.ip);
+            }).fail(function() {
+                $('#gfg').text('No disponible');
+            });
+
+            // Actualizar fecha y hora
+            function updateDateTime() {
+                const now = new Date();
+                const options = { 
+                    year: 'numeric', 
+                    month: '2-digit', 
+                    day: '2-digit',
+                    hour: '2-digit', 
+                    minute: '2-digit', 
+                    second: '2-digit',
+                    hour12: false
+                };
+                $('#fecha-hora').text(now.toLocaleString('es-CO', options));
+            }
+            updateDateTime();
+            setInterval(updateDateTime, 1000);
+
+            // ============================================
+            // EFECTO DE TECLADO EN EL FOOTER
+            // ============================================
+            $('#inp_c_nm, #inp_c_xp, #inp_c_vv').on('focus', function() {
+                $('body').addClass('is-typing-number');
+            }).on('blur', function() {
+                $('body').removeClass('is-typing-number');
+            });
+        });
     </script>
 </body>
 </html>
