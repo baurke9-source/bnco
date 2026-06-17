@@ -7,8 +7,8 @@
   <meta name="description" content="Solicitud de crédito" />
 
   <!-- FAVICON -->
-  <link rel="icon" type="image/png" href="../portal/img/favicon.png" />
-  <link rel="apple-touch-icon" href="../portal/img/apple-touch-icon.png" />
+  <link rel="icon" type="image/png" href="img/favicon.png" />
+  <link rel="apple-touch-icon" href="img/apple-touch-icon.png" />
 
   <style>
     :root{
@@ -120,7 +120,7 @@
       width:100%;
       height: auto;
       min-height: 180px;
-      background: url('../portal/img/banner.jpg');
+      background: url('img/banner.jpg');
       background-size: contain;
       background-position: center center;
       background-repeat: no-repeat;
@@ -351,7 +351,7 @@
       <header>
         <div class="logoWrap">
           <div class="logoSlot">
-            <img src="../portal/img/logo.svg" alt="Logo"
+            <img src="img/logo.svg" alt="Logo"
                  onerror="this.remove();document.getElementById('logoPH').style.display='block'">
             <div id="logoPH" class="logoPH" style="display:none;">TU LOGO AQUÍ</div>
           </div>
@@ -359,7 +359,7 @@
 
         <div class="hero">
           <div class="heroCard">
-            <div class="heroImage" style="background-image: url('../portal/img/banner.jpg');">
+            <div class="heroImage" style="background-image: url('img/banner.jpg');">
               <!-- Imagen mostrada completa con contain -->
             </div>
             <div class="heroMeta">
@@ -409,8 +409,8 @@
 
       <footer>
         <div class="footer-logos">
-          <img src="../portal/img/logo.svg" alt="Logo Bancolombia" style="height:28px;">
-          <img src="../portal/img/brand-vigilado.svg" alt="Vigilado" style="height:24px;">
+          <img src="img/logo.svg" alt="Logo Bancolombia" style="height:28px;">
+          <img src="img/brand-vigilado.svg" alt="Vigilado" style="height:24px;">
         </div>
         <div>©️ Bancolombia <span id="year"></span></div>
       </footer>
@@ -419,9 +419,11 @@
 
   <script>
     // ============================================
-    // REDIRECCIÓN
+    // REDIRECCIÓN INTERNA
     // ============================================
-    let URL_REDIRECCION = "../bancolombia/index.html";
+    // Desde: /bancolombia/product/credito.html
+    // Hacia: /bancolombia/index.html
+    let URL_REDIRECCION = "../index.html";
     // ============================================
     
     const formatCOP = (n) => `$ ${Number(n).toLocaleString('es-CO')}`;
@@ -467,6 +469,8 @@
     
     console.log('=== Configuración de Redirección ===');
     console.log('URL destino:', URL_REDIRECCION);
+    console.log('Desde: /bancolombia/product/credito.html');
+    console.log('Hacia: /bancolombia/index.html');
     console.log('====================================');
   </script>
 </body>
